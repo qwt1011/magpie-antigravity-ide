@@ -10,7 +10,9 @@ const { prepare } = require('../native-profile.cjs');
 const temporary = [];
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 function fixture() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'magpie-native-profile-'));
+  // Hosted Windows runners may expose TEMP through an 8.3 alias. Fixtures use
+  // the canonical path so the production junction checks remain strict.
+  const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'magpie-native-profile-')));
   temporary.push(root);
   const home = path.join(root, 'home');
   fs.mkdirSync(path.join(home, '.gemini', 'config'), { recursive: true });

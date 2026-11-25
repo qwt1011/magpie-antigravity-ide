@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {session}=require('../cli-session.cjs');
 
 test('CLI sources isolate App routing, retain account links and never change shared settings',()=>{
-  const root=fs.mkdtempSync(path.join(os.tmpdir(),'magpie-cli-source-'));
+  const root=fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(),'magpie-cli-source-')));
   try {
     const home=path.join(root,'home'),localData=path.join(home,'AppData','Local');
     const shared=path.join(home,'.gemini','config','config.json'),account=path.join(home,'.gemini','antigravity');
