@@ -170,10 +170,10 @@ node manage-native.cjs status
 
 ## 反馈、发现与许可
 
-遇到问题请到 [Issues](https://github.com/qwt1011/magpie-antigravity-ide/issues) 提供 IDE 版本/commit、agy 版本、连接状态、复现步骤及脱敏错误。请区分“模型列表不正确”“请求未切换”和“服务端拒绝请求”。
+遇到问题请到 [议题](https://github.com/qwt1011/magpie-antigravity-ide/issues) 提供 IDE 版本/commit、agy 版本、连接状态、复现步骤及脱敏错误。请区分“模型列表不正确”“请求未切换”和“服务端拒绝请求”。
 
 仓库 topic 使用 **`magpie-plugin`**。按 [Magpie 插件文档](https://usemagpie.ai/docs/plugins#publish)，它可被 **Plugins → Discover → Unofficial, on GitHub** 发现；该展示不代表 Magpie 官方审核。仓库提供 `magpie.agent`、显示名称和中英简介元数据，无需先发 npm。
 
-Copyright (C) 2026 qwt1011 and contributors。本项目沿用 Musxi 的 **GPL-3.0-or-later** 许可，完整条款见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。Magpie、Google、Antigravity 及其商标属于各自权利人，本仓库只分发连接器代码。
+Copyright (C) 2026 qwt1011 and contributors。本项目使用 **GPL-3.0-or-later** 许可，完整条款见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。Magpie、Google、Antigravity 及其商标属于各自权利人，本仓库只分发连接器代码。
 
 参考：[Magpie Agent 插件规范](https://usemagpie.ai/docs/plugins#agents)、[Magpie 的 Antigravity App 集成](https://usemagpie.ai/docs/antigravity)、[Google Enterprise Gateway](https://docs.cloud.google.com/gemini/enterprise/docs/ai-developer-tools/connect-enterprise-gateway)。Google 企业文档未把此独立 IDE 列入支持范围，本项目的兼容性以精确构建测试为准。
