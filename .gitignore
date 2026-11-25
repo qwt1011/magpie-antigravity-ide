@@ -1,0 +1,8 @@
+.local/
+node_modules/
+*.vsix
+*.log
+.env
+.env.*
+!.env.example
+__pycache__/

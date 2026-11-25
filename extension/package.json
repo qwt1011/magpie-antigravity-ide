@@ -1,0 +1,98 @@
+{
+  "name": "magpie-antigravity-ide-model-terminal",
+  "displayName": "Magpie · Antigravity IDE",
+  "description": "按 Magpie 的连接状态在原生侧栏使用供应商模型或 Google 账号。",
+  "version": "0.3.1",
+  "publisher": "local-workspace",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qwt1011/magpie-antigravity-ide.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.cjs",
+  "extensionKind": [
+    "ui"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "本扩展会以工作区目录启动本机 agy 交互终端。"
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "magpieAntigravity.pickModel",
+        "title": "选择 Magpie / Google 模型",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.openGoogleCli",
+        "title": "打开 Antigravity CLI（Google 账号）",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.openMagpieCli",
+        "title": "打开 Antigravity CLI（Magpie）",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.focusModelTerminal",
+        "title": "打开当前 Magpie 模型终端",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.restartModelTerminal",
+        "title": "新会话：重启当前 Magpie 模型终端",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.refresh",
+        "title": "刷新原生模型列表（重新加载窗口）",
+        "category": "Magpie"
+      },
+      {
+        "command": "magpieAntigravity.openSettings",
+        "title": "打开 Magpie 扩展设置",
+        "category": "Magpie"
+      },
+      {
+        "title": "使用 Google 账号模型（原生聊天）",
+        "category": "Magpie",
+        "command": "magpieAntigravity.useGoogle"
+      }
+    ],
+    "configuration": {
+      "title": "Magpie · Antigravity IDE",
+      "properties": {
+        "magpieAntigravity.agyPath": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "scope": "application",
+          "markdownDescription": "官方 agy.exe 的绝对路径。留空时在官方安装目录查找。扩展只读取用户级设置。"
+        },
+        "magpieAntigravity.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "旧终端模式：编辑器启动完成后按 Magpie 默认模型启动终端。原生侧栏模式不自动打开 CLI。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check extension.cjs"
+  }
+}

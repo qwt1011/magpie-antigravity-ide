@@ -1,0 +1,11 @@
+Magpie · Antigravity IDE
+Copyright (C) 2026 qwt1011 and contributors
+
+This project is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version. See LICENSE for the full text.
+
+This repository contains the connector and its tests. It does not include
+Magpie, Antigravity IDE, agy, Google account data, or those products' binaries.
+Their names and trademarks belong to their respective owners.

@@ -1,0 +1,39 @@
+{
+  "name": "magpie-agent-antigravity-ide",
+  "version": "0.3.1",
+  "description": "Magpie Agent plugin for the native Antigravity IDE chat, with independent Google and Magpie CLI sessions on Windows.",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "author": "qwt1011",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qwt1011/magpie-antigravity-ide.git"
+  },
+  "homepage": "https://github.com/qwt1011/magpie-antigravity-ide#readme",
+  "bugs": {
+    "url": "https://github.com/qwt1011/magpie-antigravity-ide/issues"
+  },
+  "keywords": [
+    "magpie-plugin",
+    "magpie-agent",
+    "antigravity",
+    "antigravity-ide",
+    "agy",
+    "windows"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "magpie": {
+    "agent": "./antigravity-ide.agent.js",
+    "name": "Antigravity IDE",
+    "summary": {
+      "zh": "在 Antigravity IDE 原生侧栏切换 Magpie 模型与 Google 账号；CLI 来源独立。仅支持 Windows IDE 2.7.0，需额外安装本地适配。",
+      "en": "Use Magpie models or your Google account in Antigravity IDE native chat, with independent CLI sources. Windows IDE 2.7.0 only; local setup required."
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.*"
+  }
+}
