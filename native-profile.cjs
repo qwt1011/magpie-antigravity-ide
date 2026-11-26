@@ -127,6 +127,7 @@ function modelList(models) {
     if (typeof value.group === 'string' && value.group) model.group = value.group;
     if (typeof value.supportsImages === 'boolean') model.supportsImages = value.supportsImages;
     else if (typeof value.images === 'boolean') model.supportsImages = value.images;
+    if (Array.isArray(value.efforts)) model.efforts = ['none','minimal','low','medium','high','xhigh','max','ultra'].filter(level => value.efforts.includes(level));
     seen.add(value.id);
     result.push(model);
   }

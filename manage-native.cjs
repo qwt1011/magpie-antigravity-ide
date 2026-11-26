@@ -4,8 +4,8 @@ const root=path.join(process.env.LOCALAPPDATA,'Programs','Antigravity IDE','reso
 const repo=__dirname, me=path.join(repo,'.local','checkpoints','native-adapter-2.7.0');
 const base=path.join(root,'extensions','agy','vscode'),entry=path.join(base,'extension.js');
 const commit='71bedb45923debaf49871bdcb7c7d3a47918e247', original='bfe65af77e4637e0c17fb395a89365f7bf78cbe512c5a230c225b188a767a8e7';
-const before='env:a.serverEnv,shell:!1', after='env:a.serverEnv.MAGPIE_IDE_NATIVE_SOURCE==="managed-v3"?require("./magpie-native/native-hub.cjs")(a.serverEnv):a.serverEnv,shell:!1';
-const helpers=['native-hub.cjs','native-profile.cjs','startup-hook.cjs'], dest=path.join(base,'magpie-native'), record=path.join(me,'installed.json'), backup=path.join(me,'extension.js');
+const before='env:a.serverEnv,shell:!1', after='env:a.serverEnv.MAGPIE_IDE_NATIVE_SOURCE==="managed-v3"?await require("./magpie-native/native-hub.cjs")(a.serverEnv,a.targetPort):a.serverEnv,shell:!1';
+const helpers=['native-hub.cjs','native-profile.cjs','startup-hook.cjs','effort-gateway.cjs','effort-ui.cjs'], dest=path.join(base,'magpie-native'), record=path.join(me,'installed.json'), backup=path.join(me,'extension.js');
 const mainFile=path.join(root,'out','main.js'),mainBackup=path.join(me,'main.js');
 const startupMarker='\n/* MAGPIE_IDE_NATIVE_STARTUP */\nimport("../extensions/agy/vscode/magpie-native/startup-hook.cjs").catch(() => {});\n/* MAGPIE_IDE_NATIVE_STARTUP_END */\n';
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex'), at=f=>fs.existsSync(f)?hash(fs.readFileSync(f)):null;
@@ -14,12 +14,12 @@ function main(action){
  const product=JSON.parse(fs.readFileSync(path.join(root,'product.json'),'utf8'));
  if(product.commit!==commit||product.ideVersion!=='2.7.0')throw Error('Unsupported IDE build; refusing to change or launch it in managed mode.');
  const state=fs.existsSync(record)?JSON.parse(fs.readFileSync(record,'utf8')):null;
- const active=!!state&&at(entry)===state.patched&&(!state.mainAfter||at(mainFile)===state.mainAfter)&&helpers.every(n=>at(path.join(dest,n))===state.files[n]);
+ const active=!!state&&at(entry)===state.patched&&(!state.mainAfter||at(mainFile)===state.mainAfter)&&Object.entries(state.files).every(([n,h])=>at(path.join(dest,n))===h);
  if(action==='status'||action==='check'){if(action==='check'&&!active)throw Error('Native model adapter is not installed for this build.');console.log(JSON.stringify({installed:active,version:product.ideVersion}));return;}
  if(action==='restore'){
    if(!state||at(backup)!==original||at(entry)!==state.patched||state.mainAfter&&(at(mainFile)!==state.mainAfter||at(mainBackup)!==state.mainBefore))throw Error('No matching original file; refusing to overwrite.');
    if(state.mainAfter)write(mainFile,fs.readFileSync(mainBackup));
-   write(entry,fs.readFileSync(backup));for(const n of helpers)if(at(path.join(dest,n))===state.files[n])fs.unlinkSync(path.join(dest,n));
+   write(entry,fs.readFileSync(backup));for(const [n,h] of Object.entries(state.files))if(at(path.join(dest,n))===h)fs.unlinkSync(path.join(dest,n));
    if(!fs.readdirSync(dest).length)fs.rmdirSync(dest);fs.unlinkSync(record);console.log('Native adapter restored.');return;
  }
  if(action!=='install')throw Error('Use install, status, check or restore.');

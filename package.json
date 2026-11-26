@@ -1,6 +1,6 @@
 {
   "name": "magpie-agent-antigravity-ide",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Magpie Agent plugin for the native Antigravity IDE chat, with independent Google and Magpie CLI sessions on Windows.",
   "private": true,
   "license": "GPL-3.0-or-later",

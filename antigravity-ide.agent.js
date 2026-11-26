@@ -24,6 +24,10 @@ function cleanModel(model) {
   };
   for (const field of ["context", "output"]) if (Number.isSafeInteger(model[field]) && model[field] > 0) out[field] = model[field];
   if (typeof model.images === "boolean") out.images = model.images;
+  if (Array.isArray(model.efforts)) {
+    const levels = ["none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"];
+    out.efforts = levels.filter(level => model.efforts.includes(level));
+  }
   return out;
 }
 

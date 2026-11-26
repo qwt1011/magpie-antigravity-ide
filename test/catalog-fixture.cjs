@@ -155,7 +155,7 @@ function normalizeHiddenModels(input = []) {
 }
 
 async function startFixture(options = {}) {
-  const receivedModels = []; const paths=[];
+  const receivedModels = []; const receivedEfforts=[]; const paths=[];
   const hiddenModels = normalizeHiddenModels(options.hiddenModels);
 
   const server = http.createServer(async (request, response) => {
@@ -184,7 +184,7 @@ async function startFixture(options = {}) {
         return;
       }
 
-      receivedModels.push(body.model);
+      receivedModels.push(body.model); receivedEfforts.push({model:body.model,effort:body.reasoning_effort??null});
       if (!MODELS.some(({ id }) => id === body.model)) {
         sendError(response, 404, `unknown fixture model: ${body.model}`, 'model_not_found');
         return;
@@ -212,7 +212,7 @@ async function startFixture(options = {}) {
     paths,baseUrl,
     url: baseUrl,
     models: MODELS.map((model) => ({ ...model })),
-    receivedModels,
+    receivedModels, receivedEfforts,
     setHiddenModels(ids) {
       const next = normalizeHiddenModels(ids);
       hiddenModels.clear();

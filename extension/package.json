@@ -2,7 +2,7 @@
   "name": "magpie-antigravity-ide-model-terminal",
   "displayName": "Magpie · Antigravity IDE",
   "description": "按 Magpie 的连接状态在原生侧栏使用供应商模型或 Google 账号。",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "publisher": "local-workspace",
   "license": "GPL-3.0-or-later",
   "repository": {

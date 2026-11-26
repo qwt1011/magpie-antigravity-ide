@@ -5,6 +5,7 @@ if(process.env.MAGPIE_IDE_NATIVE_SOURCE==='managed-v3'){
   const {app,webContents,webFrameMain}=require('electron');
   const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
   const file=path.join(os.homedir(),'.antigravity-ide','magpie-ide.json');
+  const installEffortControl=require('./effort-ui.cjs');
   const armed=new WeakSet(),busy=new WeakSet();
   async function selectStartup(id){
     if(window.__magpieStartupPicker)return null;
@@ -19,6 +20,9 @@ if(process.env.MAGPIE_IDE_NATIVE_SOURCE==='managed-v3'){
       while(Date.now()-start<35000&&!touched){
         trigger=document.querySelector('[data-testid="model-selector-trigger"]');
         if(!visible(trigger)){await pause(200);continue;}
+        // Give native conversation/default hydration time to finish before the
+        // one-time startup choice. Otherwise its late restore can overwrite us.
+        if(Date.now()-start<2200){await pause(150);continue;}
         if(trigger.getAttribute('data-model-label')===id)return 'already-default';
         if(trigger.getAttribute('aria-expanded')==='true')return 'menu-in-use';
         trigger.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true,button:0,buttons:1,pointerId:1,pointerType:'mouse',isPrimary:true,view:window}));
@@ -48,7 +52,9 @@ if(process.env.MAGPIE_IDE_NATIVE_SOURCE==='managed-v3'){
       if(u.protocol!=='http:'||!['127.0.0.1','localhost'].includes(u.hostname)||!u.searchParams.has('extensionView'))return;
       let cfg;try{cfg=JSON.parse(fs.readFileSync(file,'utf8'));}catch{return;}
       if(!cfg?.gatewayKey||typeof cfg.selectedModel!=='string'||!cfg.models?.some(m=>m.id===cfg.selectedModel))return;
-      busy.add(frame);try{await frame.executeJavaScript('(async()=>{window.__magpieStartupPickerResult=await ('+selectStartup.toString()+')('+JSON.stringify(cfg.selectedModel)+');})()');}catch{}finally{busy.delete(frame);}
+      busy.add(frame);
+      try{const control=JSON.parse(fs.readFileSync(path.join(process.env.LOCALAPPDATA,'MagpieAntigravityIDE','effort-control.json'),'utf8'));if(control.run===process.env.MAGPIE_IDE_RUN_ID&&control.origin===u.origin)await frame.executeJavaScript('('+installEffortControl.toString()+')('+JSON.stringify({url:control.url,token:control.token})+')');}catch{}
+      try{await frame.executeJavaScript('(async()=>{window.__magpieStartupPickerResult=await ('+selectStartup.toString()+')('+JSON.stringify(cfg.selectedModel)+');})()');}catch{}finally{busy.delete(frame);}
     }
     contents.on('did-frame-finish-load',(_e,_isMain,pid,rid)=>{try{void frameReady(webFrameMain.fromId(pid,rid));}catch{}});
     const all=()=>{try{for(const frame of contents.mainFrame.framesInSubtree)void frameReady(frame);}catch{}};
